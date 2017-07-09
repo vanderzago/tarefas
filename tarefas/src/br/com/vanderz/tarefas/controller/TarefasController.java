@@ -1,6 +1,7 @@
 package br.com.vanderz.tarefas.controller;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -8,12 +9,34 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.com.vanderz.login.entities.Usuario;
+import br.com.vanderz.login.persistencia.UsuarioDAO;
 import br.com.vanderz.tarefas.entities.Tarefa;
 import br.com.vanderz.tarefas.persistencia.TarefaDAO;
 
 @Controller
 public class TarefasController {
 	
+	@RequestMapping("loginForm")
+	public String loginForm() {
+		return "formulario-login";
+	}
+	
+	@RequestMapping("efetuaLogin")
+	public String efetuaLogin(Usuario usuario, HttpSession session) {
+		if(new UsuarioDAO().existeUsuario(usuario)) {
+			session.setAttribute("usuarioLogado", usuario);
+			return "menu";
+		}
+		return "redirect:loginForm";
+	}
+	
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:loginForm";
+	}
+
 	@RequestMapping("novaTarefa")
 	public String form() {
 		return "tarefa/formulario";
