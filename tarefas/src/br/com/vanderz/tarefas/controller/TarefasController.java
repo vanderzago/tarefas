@@ -1,42 +1,27 @@
 package br.com.vanderz.tarefas.controller;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.vanderz.login.entities.Usuario;
-import br.com.vanderz.login.persistencia.UsuarioDAO;
 import br.com.vanderz.tarefas.entities.Tarefa;
 import br.com.vanderz.tarefas.persistencia.TarefaDAO;
 
 @Controller
 public class TarefasController {
 	
-	@RequestMapping("loginForm")
-	public String loginForm() {
-		return "formulario-login";
+	private final TarefaDAO dao;
+	
+	@Autowired
+	public TarefasController(TarefaDAO dao) {
+		this.dao = dao;
 	}
 	
-	@RequestMapping("efetuaLogin")
-	public String efetuaLogin(Usuario usuario, HttpSession session) {
-		if(new UsuarioDAO().existeUsuario(usuario)) {
-			session.setAttribute("usuarioLogado", usuario);
-			return "menu";
-		}
-		return "redirect:loginForm";
-	}
-	
-	@RequestMapping("logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:loginForm";
-	}
-
 	@RequestMapping("novaTarefa")
 	public String form() {
 		return "tarefa/formulario";
@@ -49,42 +34,36 @@ public class TarefasController {
 			return "tarefa/formulario";
 		}
 		
-		TarefaDAO dao = new TarefaDAO();
 		dao.adiciona(tarefa);
 		return "redirect:listaTarefas";
 	}
 	
 	@RequestMapping("listaTarefas")
 	public String lista(Model model) {
-		TarefaDAO dao = new TarefaDAO();
 		model.addAttribute("tarefas", dao.getLista());
 		return "tarefa/lista";
 	}
 		
 	@RequestMapping("mostraTarefa")
 	public String mostra(Long id, Model model) {
-		TarefaDAO dao = new TarefaDAO();
 		model.addAttribute("tarefa", dao.getListaById(id));
 		return "tarefa/mostra";
 	}
 	
 	@RequestMapping("alteraTarefa")
 	public String altera(Tarefa tarefa) {
-		TarefaDAO dao = new TarefaDAO();
 		dao.altera(tarefa);
 		return "redirect:listaTarefas";
 	}
 
 	@RequestMapping("removeTarefa")
 	public void remove(Long id, HttpServletResponse response) {
-		TarefaDAO dao = new TarefaDAO();
 		dao.remove(id);
 		response.setStatus(200);
 	}
 	
 	@RequestMapping("finalizaTarefa")
 	public String finaliza(Long id, Model model) {
-		TarefaDAO dao = new TarefaDAO();
 		dao.finaliza(id);
 		model.addAttribute("tarefa", dao.getListaById(id));
 		return "tarefa/finalizada";

@@ -9,19 +9,26 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import br.com.vanderz.tarefas.entities.Tarefa;
 
+@Repository
 public class TarefaDAO {
 	// a conexão com o banco de dados
 	private Connection connection;
 	
-	public TarefaDAO() {
-		this.connection = new ConnectionFactory().getConnection();
-	}
-
-	public TarefaDAO(Connection connection) {
-		this.connection = connection;
-	}
+	@Autowired
+	public TarefaDAO(DataSource dataSource) {
+		try {
+			this.connection = dataSource.getConnection();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}	
 	
 	public List<Tarefa> getLista(){
 		try {

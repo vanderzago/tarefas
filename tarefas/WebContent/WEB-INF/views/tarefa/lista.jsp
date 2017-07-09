@@ -5,6 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link type="text/css" href="resources/css/tarefas.css" rel="stylesheet" />
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Tarefas</title>
@@ -28,7 +29,7 @@ function removeAgora(id) {
 </script>
 <a href="novaTarefa">Criar nova tarefa</a>
 <br /> <br />
-<table>
+<table id="lista-tarefas">
 <tr>
  <th>Id</th>
  <th>Descrição</th>
@@ -55,6 +56,6 @@ function removeAgora(id) {
 </tr>
 </c:forEach>
 </table>
-<a href="logout">Sair do sistema</a>
+<br /><br /><a href="logout">Sair do sistema</a>
 </body>
 </html>
