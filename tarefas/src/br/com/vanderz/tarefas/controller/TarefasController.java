@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,15 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.vanderz.tarefas.entities.Tarefa;
 import br.com.vanderz.tarefas.persistencia.TarefaDAO;
 
+@Transactional
 @Controller
 public class TarefasController {
 	
-	private final TarefaDAO dao;
-	
 	@Autowired
-	public TarefasController(TarefaDAO dao) {
-		this.dao = dao;
-	}
+	TarefaDAO dao; //usa apenas a interface
 	
 	@RequestMapping("novaTarefa")
 	public String form() {

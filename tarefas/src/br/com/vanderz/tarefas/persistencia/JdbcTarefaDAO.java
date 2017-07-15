@@ -17,12 +17,12 @@ import org.springframework.stereotype.Repository;
 import br.com.vanderz.tarefas.entities.Tarefa;
 
 @Repository
-public class TarefaDAO {
+public class JdbcTarefaDAO {
 	// a conexão com o banco de dados
 	private Connection connection;
 	
 	@Autowired
-	public TarefaDAO(DataSource dataSource) {
+	public JdbcTarefaDAO(DataSource dataSource) {
 		try {
 			this.connection = dataSource.getConnection();
 		} catch (SQLException e) {
